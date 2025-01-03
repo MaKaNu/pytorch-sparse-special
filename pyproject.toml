@@ -14,7 +14,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  # "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
@@ -24,11 +24,9 @@ dependencies = [
 [project.optional-dependencies]
 cpu = [
   "torch>=2.5.1",
-  "torchvision>=0.20.1",
 ]
 cu124 = [
   "torch>=2.5.1",
-  "torchvision>=0.20.1",
 ]
 
 [tool.uv]
@@ -41,10 +39,6 @@ conflicts = [
 
 [tool.uv.sources]
 torch = [
-  {index = "pytorch-cpu", extra = "cpu"},
-  {index = "pytorch-cu124", extra = "cu124"},
-]
-torchvision = [
   {index = "pytorch-cpu", extra = "cpu"},
   {index = "pytorch-cu124", extra = "cu124"},
 ]
