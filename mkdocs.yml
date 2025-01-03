@@ -10,6 +10,7 @@ copyright: Maintained by <a href="https://makanu.com">makanu</a>.
 nav:
   - Home: index.md
   - Modules: modules.md
+  - Tests: tests.md
 plugins:
   - search
   - mkdocstrings:
