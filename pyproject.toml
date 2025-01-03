@@ -158,3 +158,6 @@ skip_empty = true
 [tool.coverage.run]
 branch = true
 source = ["pytorch_sparse_special"]
+
+[tool.deptry]
+ignore = ["DEP002"]

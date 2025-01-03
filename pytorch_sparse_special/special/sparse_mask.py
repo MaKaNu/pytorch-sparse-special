@@ -6,16 +6,16 @@ from pytorch_sparse_special.errors import SizeValueError
 class SparseMasksTensor:
     """_summary_"""
 
-    def __init__(self, indices, values, size) -> None:
+    def __init__(self, indices: torch.Tensor, values: torch.Tensor, size: tuple[int]) -> None:
         if len(size) != 3 or indices.shape[0] != 3:
             raise SizeValueError(self)
-        self.sparse_tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
-        self.x_total = size[0]
-        self.y_total = size[1]
-        self.z_total = size[2]
-        self.norm_pixel_area = (1 / self.x_total) * (1 / self.y_total)
+        self.sparse_tensor: torch.Tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
+        self.x_total: int = size[0]
+        self.y_total: int = size[1]
+        self.z_total: int = size[2]
+        self.norm_pixel_area: float = (1 / self.x_total) * (1 / self.y_total)
 
-    def extract_sparse_region(self, bbox: torch.Tensor):
+    def extract_sparse_region(self, bbox: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Extract non-zero elements within a bounding box from a sparse tensor.
         sparse_tensor: torch.sparse_coo_tensor
@@ -46,9 +46,9 @@ class SparseMasksTensor:
         indices = self.sparse_tensor.indices()
         # only need to count all unique values on the z axis
         _, count = indices[2, :].unique(return_counts=True)
-        return count
+        return torch.tensor(count)
 
-    def pixel_per_mask_inside(self, bbox: torch.Tensor):
+    def pixel_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
         """Count the number of pixels per mask inside the given bbox from the sparse matrix.
 
         Args:
@@ -73,8 +73,8 @@ class SparseMasksTensor:
         full_count[unique_index] = count
         return full_count
 
-    def area_per_mask(self):
+    def area_per_mask(self) -> torch.Tensor:
         return self.norm_pixel_area * self.pixel_per_mask()
 
-    def area_per_mask_inside(self, bbox: torch.Tensor):
+    def area_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
         return self.norm_pixel_area * self.pixel_per_mask_inside(bbox)

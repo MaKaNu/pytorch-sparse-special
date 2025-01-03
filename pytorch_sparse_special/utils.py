@@ -11,4 +11,4 @@ def area_of_bbox(bbox: torch.Tensor) -> torch.Tensor:
         torch.Tensor: Area of bbox.
     """
     xmin, ymin, xmax, ymax = bbox
-    return (xmax - xmin) * (ymax - ymin)
+    return torch.tensor((xmax - xmin) * (ymax - ymin))
