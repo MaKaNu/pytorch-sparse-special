@@ -1,6 +1,10 @@
 import pytest
 import torch
 
+"""
+Scenario1: 3 Masks in Square Image
+"""
+
 
 @pytest.fixture
 def indices_scenario1():
@@ -44,6 +48,11 @@ def bbox_scenario1():
     )
 
 
+"""
+Scenario2: 3 Masks in Rectangle Image
+"""
+
+
 @pytest.fixture
 def indices_scenario2():
     return torch.tensor([
@@ -84,6 +93,83 @@ def bbox_scenario2():
         ],
         dtype=torch.float32,
     )
+
+
+"""
+Scenario3: Raises Error because size is not 3D
+"""
+
+
+@pytest.fixture
+def indices_scenario3():
+    return torch.tensor([
+        [1],
+        [1],
+        [1],
+    ])
+
+
+@pytest.fixture
+def values_scenario3():
+    return torch.tensor(
+        [1],
+        dtype=torch.float32,
+    )
+
+
+@pytest.fixture
+def size_scenario3():
+    return (2, 2)
+
+
+@pytest.fixture
+def sparse_scenario3(indices_scenario3, values_scenario3, size_scenario3):
+    return indices_scenario3, values_scenario3, size_scenario3
+
+
+"""
+Scenario4: Raises Error because indices is not 3D
+"""
+
+
+@pytest.fixture
+def indices_scenario4():
+    return torch.tensor([
+        [1],
+        [1],
+    ])
+
+
+@pytest.fixture
+def values_scenario4():
+    return torch.tensor(
+        [1],
+        dtype=torch.float32,
+    )
+
+
+@pytest.fixture
+def size_scenario4():
+    return (2, 2, 2)
+
+
+@pytest.fixture
+def sparse_scenario4(indices_scenario4, values_scenario4, size_scenario4):
+    return indices_scenario4, values_scenario4, size_scenario4
+
+
+"""
+Combined Scenarios
+"""
+
+
+@pytest.fixture()
+def scenarios_sparse_fails(request, sparse_scenario3, sparse_scenario4):
+    if request.param == 1:
+        return sparse_scenario3
+    elif request.param == 2:
+        return sparse_scenario4
+    raise NotImplementedError(f"No such scenario: {request.param!r}")
 
 
 @pytest.fixture()

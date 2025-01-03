@@ -1,8 +1,14 @@
 import torch
 
+from pytorch_sparse_special.errors import SizeValueError
+
 
 class SparseMasksTensor:
-    def __init__(self, indices, values, size):
+    """_summary_"""
+
+    def __init__(self, indices, values, size) -> None:
+        if len(size) != 3 or indices.shape[0] != 3:
+            raise SizeValueError(self)
         self.sparse_tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
         self.x_total = size[0]
         self.y_total = size[1]

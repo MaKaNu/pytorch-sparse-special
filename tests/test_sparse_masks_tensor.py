@@ -1,6 +1,7 @@
 import pytest
 import torch
 
+from pytorch_sparse_special.errors import SizeValueError
 from pytorch_sparse_special.special.sparse_mask import SparseMasksTensor
 
 
@@ -17,6 +18,28 @@ def test_create(scenarios_sparse):
 
     instance = SparseMasksTensor(indices, values, size)
     assert isinstance(instance, SparseMasksTensor)
+
+
+@pytest.fixture()
+def expect_errors(request):
+    if request.param in [1, 2]:
+        return SizeValueError
+    raise NotImplementedError(f"No such scenario: {request.param!r}")
+
+
+@pytest.mark.parametrize(
+    "scenarios_sparse_fails, expect_errors",
+    ([1, 1], [2, 2]),
+    ids=["scenario3", "scenario4"],
+    indirect=True,
+)
+def test_create_fails(scenarios_sparse_fails, expect_errors):
+    indices = scenarios_sparse_fails[0]
+    values = scenarios_sparse_fails[1]
+    size = scenarios_sparse_fails[2]
+
+    with pytest.raises(expect_errors):
+        SparseMasksTensor(indices, values, size)
 
 
 @pytest.fixture()
