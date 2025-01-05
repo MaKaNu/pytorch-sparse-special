@@ -76,9 +76,6 @@ dev = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.setuptools]
-py-modules = ["pytorch_sparse_special"]
-
 [tool.mypy]
 files = ["src"]
 disallow_untyped_defs = true
