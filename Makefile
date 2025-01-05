@@ -1,7 +1,13 @@
 .PHONY: install
-install: ## Install the virtual environment and install the pre-commit hooks
+install: ## Install the venv and install the pre-commit hooks
 	@echo "🚀 Creating virtual environment using uv"
-	@uv sync
+	@uv sync --extra cpu
+	@uv run pre-commit install
+
+.PHONY: install-gpu
+install-gpu: ## Install the venv and install the pre-commit hooks with gpu support
+	@echo "🚀 Creating virtual environment using uv with gpu support"
+	@uv sync --extra cu124
 	@uv run pre-commit install
 
 .PHONY: check
