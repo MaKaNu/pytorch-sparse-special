@@ -11,9 +11,13 @@ The calculation for sparse is looking like the following:
 4. Union equals sum of all normalized pixels plus area of bbox minus Intersection.
 
 **Formulas**
+
 $$area_{total} = pixelsize^2 \cdot count_{total}$$
+
 $$area_{inside} = pixelsize^2 \cdot count_{inside}$$
+
 $$area_{bbox} = (xmax -xmin) \cdot (ymax - ymin)$$
+
 $$iou =  {area_{inside}\over area_{bbox} + area_{total} - area_{inside}}$$
 
 ## Scenario 1: Simple Square
@@ -34,13 +38,13 @@ The three example masks with given bbox are defined as the following:
 | $area_{inside}$  | 0.12           | 0.2          | 0.16         |
 | $iou$            | 0.2            | ${5\over9}$  | ${1\over3}$  |
 
-|               | bbox |
-| ------------- | ---- |
-| $xmin$        | 0.2  |
-| $ymin$        | 0.2  |
-| $xmax$        | 0.8  |
-| $ymax$        | 0.8  |
-| $area\_{bbox} | 0.36 |
+|                | bbox |
+| -------------- | ---- |
+| $xmin$         | 0.2  |
+| $ymin$         | 0.2  |
+| $xmax$         | 0.8  |
+| $ymax$         | 0.8  |
+| $area\_{bbox}$ | 0.36 |
 
 ## Scenario 2: Rectangle unequal ratio
 
@@ -52,21 +56,21 @@ The three example masks with given bbox are defined as the following:
 
 - total image size: 5 x 6
 
-|                  | Pixels T-shape                        | Pixels Cross                         | Pixels Rects                                |
-| ---------------- | ------------------------------------- | ------------------------------------ | ------------------------------------------- |
-| $count_{total}$  | 10                                    | 6                                    | 9                                           |
-| $count_{inside}$ | 4                                     | 6                                    | 6                                           |
-| $area_{total}$   | 0.4                                   | 0.24                                 | 0.36                                        |
-| $area_{inside}$  | 0.16                                  | 0.24                                 | 0.24                                        |
-| $iou$            | ${0.16\over0.4 + 0.4 - 0.16} = 0.25 $ | ${0.24\over0.4 + 0.24 - 0.24} = 0.6$ | ${0.24\over0.4 + 0.36 - 0.24} = {6\over13}$ |
+|                  | Pixels T-shape                       | Pixels Cross                         | Pixels Rects                                |
+| ---------------- | ------------------------------------ | ------------------------------------ | ------------------------------------------- |
+| $count_{total}$  | 10                                   | 6                                    | 9                                           |
+| $count_{inside}$ | 4                                    | 6                                    | 6                                           |
+| $area_{total}$   | 0.4                                  | 0.24                                 | 0.36                                        |
+| $area_{inside}$  | 0.16                                 | 0.24                                 | 0.24                                        |
+| $iou$            | ${0.16\over0.4 + 0.4 - 0.16} = 0.25$ | ${0.24\over0.4 + 0.24 - 0.24} = 0.6$ | ${0.24\over0.4 + 0.36 - 0.24} = {6\over13}$ |
 
-|               | bbox                                      |
-| ------------- | ----------------------------------------- |
-| $xmin$        | ${1\over5}$                               |
-| $ymin$        | ${1\over6}$                               |
-| $xmax$        | ${4\over5}$                               |
-| $ymax$        | ${5\over6}$                               |
-| $area_{bbox}$ | $ {3\over5} \cdot {4\over6} = {2\over5} $ |
+|               | bbox                                    |
+| ------------- | --------------------------------------- |
+| $xmin$        | ${1\over5}$                             |
+| $ymin$        | ${1\over6}$                             |
+| $xmax$        | ${4\over5}$                             |
+| $ymax$        | ${5\over6}$                             |
+| $area_{bbox}$ | ${3\over5} \cdot {4\over6} = {2\over5}$ |
 
 ### Comparison to simple pixel count method
 
@@ -74,6 +78,7 @@ In the simple pixel count method we just count the area based on pixel.
 Since our bounding box exactly closes on pixel we are able to do so.
 
 **Formula IoU (Pixel)**
+
 $$IoU = {count_{inside}\over count_{total} + count_{bbox} -  count_{inside}}$$
 
 #### Scenario 1
@@ -103,14 +108,15 @@ The issue is probably in the calculation of the normalised size of the bbox or t
 Instead of calculating the pixels even in both directions lets calculate the $pixelsize$ depended on the direction:
 
 $$ pixelsize^2 = pixel*{height} \cdot pixel*{width}$$
-with $ pixel_{height} = {1\over6}$ and $ pixel\_{width} = {1\over5}$
 
-|                  | Pixels T-shape                                               | Pixels Cross                      | Pixels Rects                      |
-| ---------------- | ------------------------------------------------------------ | --------------------------------- | --------------------------------- |
-| $count_{total}$  | 10                                                           | 6                                 | 9                                 |
-| $count_{inside}$ | 4                                                            | 6                                 | 6                                 |
-| $area_{total}$   | ${1\over3}$                                                  | 0.2                               | 0.3                               |
-| $area_{inside}$  | ${2\over15}$                                                 | 0.2                               | 0.2                               |
-| $iou$            | ${{2\over15}\over0.4 + {1\over3} - {2\over15}} = {2\over9} $ | ${0.2\over0.4 + 0.2 - 0.2} = 0.5$ | ${0.2\over0.4 + 0.3 - 0.2} = 0.4$ |
+with $pixel_{height} = {1\over6}$ and $pixel\_{width} = {1\over5}$
+
+|                  | Pixels T-shape                                              | Pixels Cross                      | Pixels Rects                      |
+| ---------------- | ----------------------------------------------------------- | --------------------------------- | --------------------------------- |
+| $count_{total}$  | 10                                                          | 6                                 | 9                                 |
+| $count_{inside}$ | 4                                                           | 6                                 | 6                                 |
+| $area_{total}$   | ${1\over3}$                                                 | 0.2                               | 0.3                               |
+| $area_{inside}$  | ${2\over15}$                                                | 0.2                               | 0.2                               |
+| $iou$            | ${{2\over15}\over0.4 + {1\over3} - {2\over15}} = {2\over9}$ | ${0.2\over0.4 + 0.2 - 0.2} = 0.5$ | ${0.2\over0.4 + 0.3 - 0.2} = 0.4$ |
 
 We might be able to solve the same issue from the bbox side, but since we validated, that the normalisation was the issue we can now fix this issue.

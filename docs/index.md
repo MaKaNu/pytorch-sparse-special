@@ -6,3 +6,14 @@
 [![License](https://img.shields.io/github/license/makanu/pytorch-sparse-special)](https://img.shields.io/github/license/makanu/pytorch-sparse-special)
 
 A small library which implements special implementations of pytorch sparse matrices.
+
+## Usage
+
+Read the examples section for a brief instruction how to use the various classes provided by this library.
+
+The modules section provides deeper instructions to all the methods and functions provided by the library.
+
+## Tests
+
+The test page provides informations about the scenarios of the unit tests.
+Additional they also portrait the process of development of the scenarios.
