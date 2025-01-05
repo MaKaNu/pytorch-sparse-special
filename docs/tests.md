@@ -6,7 +6,7 @@ The calculation for sparse is looking like the following:
 2. calculate area of the bbox normalized to pixels
 3. Intersection is equal to the sum of pixels inside
    1. Calculate the normalized area for the pixels inside.
-   2. area of single pixel = (1 / total)^2
+   2. area of single $pixel = (1 / total)^2$
    3. sum up area
 4. Union equals sum of all normalized pixels plus area of bbox minus Intersection.
 
@@ -22,9 +22,9 @@ $$iou =  {area_{inside}\over area_{bbox} + area_{total} - area_{inside}}$$
 
 ## Scenario 1: Simple Square
 
-![class1](assets/class1.png)
-![class2](assets/class2.png)
-![class3](assets/class3.png)
+![class1](./assets/class1.png)
+![class2](./assets/class2.png)
+![class3](./assets/class3.png)
 
 The three example masks with given bbox are defined as the following:
 
@@ -48,9 +48,9 @@ The three example masks with given bbox are defined as the following:
 
 ## Scenario 2: Rectangle unequal ratio
 
-![class1_v2](assets/class1_v2.png)
-![class2_v2](assets/class2_v2.png)
-![class3_v2](assets/class3_v2.png)
+![class1_v2](./assets/class1_v2.png)
+![class2_v2](./assets/class2_v2.png)
+![class3_v2](./assets/class3_v2.png)
 
 The three example masks with given bbox are defined as the following:
 
