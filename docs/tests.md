@@ -6,7 +6,7 @@ The calculation for sparse is looking like the following:
 2. calculate area of the bbox normalized to pixels
 3. Intersection is equal to the sum of pixels inside
    1. Calculate the normalized area for the pixels inside.
-   2. area of single pixel = (1 / total)^2
+   2. area of single $pixel = (1 / total)^2$
    3. sum up area
 4. Union equals sum of all normalized pixels plus area of bbox minus Intersection.
 
