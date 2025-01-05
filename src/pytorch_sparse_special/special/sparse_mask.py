@@ -18,7 +18,7 @@ sparse_mask module: provides the SparseMasksTensor class.
 
 import torch
 
-from pytorch_sparse_special.errors import SizeValueError
+from ..errors import SizeValueError
 
 
 class SparseMasksTensor:
@@ -82,8 +82,8 @@ class SparseMasksTensor:
         """
         indices = self.sparse_tensor.indices()
         # only need to count all unique values on the z axis
-        _, count = indices[2, :].unique(return_counts=True)
-        return torch.tensor(count)
+        count: torch.Tensor = indices[2, :].unique(return_counts=True)[1]
+        return count
 
     def pixel_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
         """Count the number of pixels per mask inside the given bbox from the sparse matrix.
