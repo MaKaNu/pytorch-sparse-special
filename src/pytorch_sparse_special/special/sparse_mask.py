@@ -83,7 +83,7 @@ class SparseMasksTensor:
         indices = self.sparse_tensor.indices()
         # only need to count all unique values on the z axis
         _, count = indices[2, :].unique(return_counts=True)
-        return torch.tensor(count)
+        return count.clone().detach()
 
     def pixel_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
         """Count the number of pixels per mask inside the given bbox from the sparse matrix.
