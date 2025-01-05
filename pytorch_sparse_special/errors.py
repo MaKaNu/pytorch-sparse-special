@@ -20,5 +20,15 @@ from typing import Any
 
 
 class SizeValueError(ValueError):
+    """A SizeValueError extends ValueError.
+
+    Should be raised if the vize value of an object does not met the criteria.
+    """
+
     def __init__(self, obj: Any) -> None:
+        """creates instance of SizeValueError
+
+        Args:
+            obj (Any): The object which size value does not met the criteria.
+        """
         super().__init__(f"{type(obj)} is defined as 3D Matrix. Fix size or indices attribute!")

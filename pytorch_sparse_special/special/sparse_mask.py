@@ -22,9 +22,24 @@ from pytorch_sparse_special.errors import SizeValueError
 
 
 class SparseMasksTensor:
-    """_summary_"""
+    """A 3D Sparse Matrix which represents a stack of binary class masks."""
 
     def __init__(self, indices: torch.Tensor, values: torch.Tensor, size: tuple[int]) -> None:
+        """initilaize a SparseMaskTensor instance.
+        The actual tensor is a property of the class object.
+        For further information about the class arguments refer:
+        [sparse_coo_tensor](https://pytorch.org/docs/stable/generated/torch.sparse_coo_tensor.html)
+
+        Args:
+            indices (torch.Tensor): [DxN] The coordinates for the values of the Matrix. D equals 3.
+            values (torch.Tensor): [1xN] The values of the masks.
+            size (tuple[int]): Size of the Matrix. Has to be three values.
+                First and second are the width and height of the masks,
+                the last one is the number of different Masks.
+
+        Raises:
+            SizeValueError: If Size or indices doesn't match 3D.
+        """
         if len(size) != 3 or indices.shape[0] != 3:
             raise SizeValueError(self)
         self.sparse_tensor: torch.Tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
@@ -36,8 +51,12 @@ class SparseMasksTensor:
     def extract_sparse_region(self, bbox: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Extract non-zero elements within a bounding box from a sparse tensor.
-        sparse_tensor: torch.sparse_coo_tensor
-        bbox: [x_min, y_min, x_max, y_max]
+
+        Args:
+            bbox (torch.Tensor): The BBox, which inhouses the pixels
+
+        Returns:
+            tuple[torch.Tensor, torch.Tensor]: filtered indices and values which are inside the bbox.
         """
 
         x_min, y_min, x_max, y_max = bbox
@@ -92,7 +111,20 @@ class SparseMasksTensor:
         return full_count
 
     def area_per_mask(self) -> torch.Tensor:
+        """Calculate the area of the total mask.
+
+        Returns:
+            torch.Tensor: list of area sizes, lenght based on number of masks.
+        """
         return self.norm_pixel_area * self.pixel_per_mask()
 
     def area_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
+        """Calculate the area of the mask inside of a bbox.
+
+        Args:
+            bbox (torch.Tensor): The BBox, which inhouses the pixels
+
+        Returns:
+            torch.Tensor: list of inside area sizes, lenght based on number of masks.
+        """
         return self.norm_pixel_area * self.pixel_per_mask_inside(bbox)
