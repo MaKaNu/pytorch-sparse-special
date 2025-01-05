@@ -18,7 +18,7 @@ sparse_mask module: provides the SparseMasksTensor class.
 
 import torch
 
-from pytorch_sparse_special.errors import SizeValueError
+from ..errors import SizeValueError
 
 
 class SparseMasksTensor:

@@ -18,8 +18,8 @@ Metrics module: provides the metric functions for pytorch_sparse_special.
 
 import torch
 
-from pytorch_sparse_special.special.sparse_mask import SparseMasksTensor
-from pytorch_sparse_special.utils import area_of_bbox
+from .special.sparse_mask import SparseMasksTensor
+from .utils import area_of_bbox
 
 
 def iou_sparse_masks_bbox(sparse_masks: SparseMasksTensor, bbox: torch.Tensor) -> torch.Tensor:
