@@ -8,7 +8,7 @@ A mask tensor is a mono value index matrix. It describes at which pixels in an i
 
 A mask Tensor is an 3D Tensor with following dimensions:
 
-$$Shape = [W, H, N]$$
+$$Shape = [N, H, W]$$
 
 with $W$ as the width of the image, $H$ as the height of the image and $N$ as the number of masks.
 
@@ -21,9 +21,9 @@ from pytorch-sparse-special import MaskSparseTensor
 
 indices = torch.tensor(
     [
+      [0, 0, 0, 0, 1, 1, 1, 1, 2],
       [0, 1, 1, 2, 0, 0, 2, 2, 1],
       [1, 0, 2, 1, 0, 2, 0, 2, 1],
-      [0, 0, 0, 0, 1, 1, 1, 1, 2],
     ],
 )
 

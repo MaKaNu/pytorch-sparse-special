@@ -31,11 +31,12 @@ class SparseMasksTensor:
         [sparse_coo_tensor](https://pytorch.org/docs/stable/generated/torch.sparse_coo_tensor.html)
 
         Args:
-            indices (torch.Tensor): [DxN] The coordinates for the values of the Matrix. D equals 3.
-            values (torch.Tensor): [1xN] The values of the masks.
-            size (tuple[int]): Size of the Matrix. Has to be three values.
-                First and second are the width and height of the masks,
-                the last one is the number of different Masks.
+            indices (torch.Tensor): [DxP] The coordinates for the values of the Matrix. D equals 3.
+            values (torch.Tensor): [1xP] The values of the masks.
+            size (tuple[int]): Size of the Matrix. Has to be three values. [NxHxW]
+                N = Number of masks
+                H = Height of image
+                W = Width of image
 
         Raises:
             SizeValueError: If Size or indices doesn't match 3D.
@@ -43,10 +44,10 @@ class SparseMasksTensor:
         if len(size) != 3 or indices.shape[0] != 3:
             raise SizeValueError(self)
         self.sparse_tensor: torch.Tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
-        self.x_total: int = size[0]
-        self.y_total: int = size[1]
-        self.z_total: int = size[2]
-        self.norm_pixel_area: float = (1 / self.x_total) * (1 / self.y_total)
+        self.n_total: int = size[0]
+        self.h_total: int = size[1]
+        self.w_total: int = size[2]
+        self.norm_pixel_area: float = (1 / self.w_total) * (1 / self.h_total)
 
     def extract_sparse_region(self, bbox: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
@@ -64,8 +65,8 @@ class SparseMasksTensor:
         values = self.sparse_tensor.values()
 
         # Mask for indices within the bounding box
-        mask_x = (indices[1] >= x_min * self.x_total) & (indices[1] < x_max * self.y_total)
-        mask_y = (indices[0] >= y_min * self.x_total) & (indices[0] < y_max * self.y_total)
+        mask_x = (indices[1] >= x_min * self.w_total) & (indices[1] < x_max * self.h_total)
+        mask_y = (indices[2] >= y_min * self.w_total) & (indices[2] < y_max * self.h_total)
         mask = mask_x & mask_y
 
         # Extract the relevant indices and values
@@ -81,8 +82,8 @@ class SparseMasksTensor:
             Tensor: Number of unique values on z axis.
         """
         indices = self.sparse_tensor.indices()
-        # only need to count all unique values on the z axis
-        count: torch.Tensor = indices[2, :].unique(return_counts=True)[1]
+        # only need to count all unique values on the N axis
+        count: torch.Tensor = indices[0, :].unique(return_counts=True)[1]
         return count
 
     def pixel_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
@@ -95,12 +96,12 @@ class SparseMasksTensor:
             Tensor: Number of unique values on z axis inside bbox
         """
         inside_indices, _ = self.extract_sparse_region(bbox)
-        # count the values on the z axis
-        unique_index, count = inside_indices[2, :].unique(return_counts=True)
+        # count the values on the N axis
+        unique_index, count = inside_indices[0, :].unique(return_counts=True)
 
         # Create Tensor with the range of all mask
         # necessary, if mask not inside bbox and we want to keep the actual shape
-        num_masks = torch.arange(self.z_total)
+        num_masks = torch.arange(self.n_total)
 
         # Final variable which has the shape matching all masks
         full_count = torch.zeros(num_masks.shape, dtype=torch.long)
