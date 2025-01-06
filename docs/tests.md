@@ -120,3 +120,36 @@ with $pixel_{height} = {1\over6}$ and $pixel\_{width} = {1\over5}$
 | $iou$            | ${{2\over15}\over0.4 + {1\over3} - {2\over15}} = {2\over9}$ | ${0.2\over0.4 + 0.2 - 0.2} = 0.5$ | ${0.2\over0.4 + 0.3 - 0.2} = 0.4$ |
 
 We might be able to solve the same issue from the bbox side, but since we validated, that the normalisation was the issue we can now fix this issue.
+
+## Scenario 3:
+
+#TODO
+
+## Scenario 4:
+
+#TODO
+
+## Scenario 5: Mask Outside
+
+![class2](./assets/class2.png)
+![class3](./assets/class4.png)
+
+The two example masks with given bbox are defined as the following:
+
+- total image size: 5 x 5
+
+|                  | Pixels Cross | Pixels L-Shape |
+| ---------------- | ------------ | -------------- |
+| $count_{total}$  | $5$          | $5$            |
+| $count_{inside}$ | $5$          | $0$            |
+| $iou$            | ${5\over9}$  | ${0\over14}$   |
+
+|                | bbox |
+| -------------- | ---- |
+| $xmin$         | $1$  |
+| $ymin$         | $1$  |
+| $xmax$         | $4$  |
+| $ymax$         | $4$  |
+| $area\_{bbox}$ | $9$  |
+
+The test should show that, even so the calculation for the second example provides zero iou the value is also created.
