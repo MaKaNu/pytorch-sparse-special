@@ -8,8 +8,8 @@ from pytorch_sparse_special.special.sparse_mask import SparseMasksTensor
 @pytest.mark.parametrize(
     "scenarios_sparse, expected_iou",
     [
-        (1, torch.tensor([0.2, 5 / 9, 1 / 3])),
-        (2, torch.tensor([2 / 9, 0.5, 0.4])),
+        (1, torch.tensor([3 / 15, 5 / 9, 4 / 12])),
+        (2, torch.tensor([4 / 18, 6 / 12, 6 / 15])),
         (5, torch.tensor([5 / 9, 0 / 14])),
     ],
     ids=["scenario1", "scenario2", "scenario5"],
