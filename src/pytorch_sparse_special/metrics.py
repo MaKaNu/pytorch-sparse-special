@@ -32,7 +32,7 @@ def iou_sparse_masks_bbox(sparse_masks: SparseMasksTensor, bbox: torch.Tensor) -
     Returns:
         torch.Tensor: iou of all masks against the bbox
     """
-    iou = sparse_masks.area_per_mask_inside(bbox) / (
-        area_of_bbox(bbox) + sparse_masks.area_per_mask() - sparse_masks.area_per_mask_inside(bbox)
+    iou = sparse_masks.pixel_per_mask_inside(bbox) / (
+        area_of_bbox(bbox) + sparse_masks.pixel_per_mask() - sparse_masks.pixel_per_mask_inside(bbox)
     )
     return iou
