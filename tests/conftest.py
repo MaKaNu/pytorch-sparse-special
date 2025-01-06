@@ -25,7 +25,7 @@ def sparse_scenario1():
     ])
     values = torch.tensor([1] * 9 + [2] * 5 + [3] * 7, dtype=torch.float32)
     size = (3, 5, 5)
-    bbox = torch.tensor([0.2, 0.2, 0.8, 0.8], dtype=torch.float32)
+    bbox = torch.tensor([1, 1, 4, 4], dtype=torch.float32)
     return create_sparse(indices, values, size, bbox)
 
 
@@ -44,7 +44,7 @@ def sparse_scenario2():
     ])
     values = torch.tensor([1] * 10 + [2] * 6 + [3] * 9, dtype=torch.float32)
     size = (3, 6, 5)
-    bbox = torch.tensor([0.2, 1 / 6, 0.8, 5 / 6], dtype=torch.float32)
+    bbox = torch.tensor([1, 1, 4, 5], dtype=torch.float32)
     return create_sparse(indices, values, size, bbox)
 
 
@@ -96,7 +96,7 @@ def sparse_scenario5():
     ])
     values = torch.tensor([2] * 5 + [4] * 5, dtype=torch.float32)
     size = (2, 5, 5)
-    bbox = torch.tensor([0.2, 0.2, 0.8, 0.8], dtype=torch.float32)
+    bbox = torch.tensor([1, 1, 4, 4], dtype=torch.float32)
     return create_sparse(indices, values, size, bbox)
 
 
@@ -106,7 +106,7 @@ Combined Scenarios
 
 
 @pytest.fixture
-def scenarios_sparse(request, sparse_scenario1, sparse_scenario2):
+def scenarios_sparse(request, sparse_scenario1, sparse_scenario2, sparse_scenario5):
     scenarios = {
         1: sparse_scenario1,
         2: sparse_scenario2,
