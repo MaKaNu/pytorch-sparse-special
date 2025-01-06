@@ -45,9 +45,6 @@ class SparseMasksTensor:
             raise SizeValueError(self)
         self.sparse_tensor: torch.Tensor = torch.sparse_coo_tensor(indices, values, size, is_coalesced=True)
         self.n_total: int = size[0]
-        self.h_total: int = size[1]
-        self.w_total: int = size[2]
-        self.norm_pixel_area: float = (1 / self.w_total) * (1 / self.h_total)
 
     def extract_sparse_region(self, bbox: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
@@ -65,8 +62,8 @@ class SparseMasksTensor:
         values = self.sparse_tensor.values()
 
         # Mask for indices within the bounding box
-        mask_x = (indices[1] >= x_min * self.w_total) & (indices[1] < x_max * self.h_total)
-        mask_y = (indices[2] >= y_min * self.w_total) & (indices[2] < y_max * self.h_total)
+        mask_x = (indices[1] >= x_min) & (indices[1] < x_max)
+        mask_y = (indices[2] >= y_min) & (indices[2] < y_max)
         mask = mask_x & mask_y
 
         # Extract the relevant indices and values
