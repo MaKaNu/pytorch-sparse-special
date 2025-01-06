@@ -110,22 +110,3 @@ class SparseMasksTensor:
         # which enables infusing the count into full_count
         full_count[unique_index] = count
         return full_count
-
-    def area_per_mask(self) -> torch.Tensor:
-        """Calculate the area of the total mask.
-
-        Returns:
-            torch.Tensor: list of area sizes, lenght based on number of masks.
-        """
-        return self.norm_pixel_area * self.pixel_per_mask()
-
-    def area_per_mask_inside(self, bbox: torch.Tensor) -> torch.Tensor:
-        """Calculate the area of the mask inside of a bbox.
-
-        Args:
-            bbox (torch.Tensor): The BBox, which inhouses the pixels
-
-        Returns:
-            torch.Tensor: list of inside area sizes, lenght based on number of masks.
-        """
-        return self.norm_pixel_area * self.pixel_per_mask_inside(bbox)
