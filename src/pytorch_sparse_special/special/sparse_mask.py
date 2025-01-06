@@ -24,7 +24,7 @@ from ..errors import SizeValueError
 class SparseMasksTensor:
     """A 3D Sparse Matrix which represents a stack of binary class masks."""
 
-    def __init__(self, indices: torch.Tensor, values: torch.Tensor, size: tuple[int]) -> None:
+    def __init__(self, indices: torch.Tensor, values: torch.Tensor, size: tuple[int, int, int]) -> None:
         """initilaize a SparseMaskTensor instance.
         The actual tensor is a property of the class object.
         For further information about the class arguments refer:
@@ -33,7 +33,7 @@ class SparseMasksTensor:
         Args:
             indices (torch.Tensor): [DxP] The coordinates for the values of the Matrix. D equals 3.
             values (torch.Tensor): [1xP] The values of the masks.
-            size (tuple[int]): Size of the Matrix. Has to be three values. [NxHxW]
+            size (tuple[int, int, int]): Size of the Matrix. Has to be three values. [NxHxW]
                 N = Number of masks
                 H = Height of image
                 W = Width of image
