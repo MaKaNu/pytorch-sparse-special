@@ -11,8 +11,9 @@ from pytorch_sparse_special.special.sparse_mask import SparseMasksTensor
         (1, torch.tensor([3 / 15, 5 / 9, 4 / 12])),
         (2, torch.tensor([4 / 18, 6 / 12, 6 / 15])),
         (5, torch.tensor([5 / 9, 0 / 14])),
+        (6, torch.tensor([5 / 9, 0, 0 / 14])),
     ],
-    ids=["scenario1", "scenario2", "scenario5"],
+    ids=["scenario1", "scenario2", "scenario5", "scenario6"],
     indirect=["scenarios_sparse"],
 )
 def test_iou_sparse_masks_bbox(scenarios_sparse, expected_iou):

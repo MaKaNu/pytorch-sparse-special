@@ -99,3 +99,27 @@ The two example masks with given bbox are defined as the following:
 | $area\_{bbox}$ | $9$  |
 
 The test should show that, even so the calculation for the second example provides zero iou the value is also created.
+
+## Scenario 6: Empty Mask
+
+![class2](./assets/class2.png)
+![class3](./assets/class4.png)
+
+Same Masks as in [Scenario 5](#scenario-5-mask-outside) but this time an empty mask is placed between them.
+This is done by moving the L-Shape on N layer with index = 2.
+
+- total image size: 5 x 5
+
+|                  | Pixels Cross | Empty Mask | Pixels L-Shape |
+| ---------------- | ------------ | ---------- | -------------- |
+| $count_{total}$  | $5$          | $0$        | $5$            |
+| $count_{inside}$ | $5$          | $0$        | $0$            |
+| $iou$            | ${5\over9}$  | $0$        | ${0\over14}$   |
+
+|                | bbox |
+| -------------- | ---- |
+| $xmin$         | $1$  |
+| $ymin$         | $1$  |
+| $xmax$         | $4$  |
+| $ymax$         | $4$  |
+| $area\_{bbox}$ | $9$  |
