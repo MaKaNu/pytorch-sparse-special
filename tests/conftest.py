@@ -101,16 +101,36 @@ def sparse_scenario5():
 
 
 """
+Scenario6: Empty Masks
+"""
+
+
+@pytest.fixture
+def sparse_scenario6():
+    indices = torch.tensor([
+        # <---Cross-->  <--L-Shape-->
+        [0, 0, 0, 0, 0, 2, 2, 2, 2, 2],  # N
+        [2, 1, 2, 3, 2, 2, 3, 4, 4, 4],  # H
+        [1, 2, 2, 2, 3, 4, 4, 4, 3, 2],  # W
+    ])
+    values = torch.tensor([2] * 5 + [4] * 5, dtype=torch.float32)
+    size = (3, 5, 5)
+    bbox = torch.tensor([1, 1, 4, 4], dtype=torch.float32)
+    return create_sparse(indices, values, size, bbox)
+
+
+"""
 Combined Scenarios
 """
 
 
 @pytest.fixture
-def scenarios_sparse(request, sparse_scenario1, sparse_scenario2, sparse_scenario5):
+def scenarios_sparse(request, sparse_scenario1, sparse_scenario2, sparse_scenario5, sparse_scenario6):
     scenarios = {
         1: sparse_scenario1,
         2: sparse_scenario2,
         5: sparse_scenario5,
+        6: sparse_scenario6,
     }
     if request.param not in scenarios:
         raise NotImplementedError(f"No such scenario: {request.param!r}")

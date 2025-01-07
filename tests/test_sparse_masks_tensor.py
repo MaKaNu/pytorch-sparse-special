@@ -39,8 +39,9 @@ def test_create_fails(scenarios_sparse_fails, expect_errors):
         (1, {"shape_idx": torch.Size([3, 12]), "shape_val": torch.Size([12])}),
         (2, {"shape_idx": torch.Size([3, 16]), "shape_val": torch.Size([16])}),
         (5, {"shape_idx": torch.Size([3, 5]), "shape_val": torch.Size([5])}),
+        (6, {"shape_idx": torch.Size([3, 5]), "shape_val": torch.Size([5])}),
     ],
-    ids=["scenario1", "scenario2", "scenario5"],
+    ids=["scenario1", "scenario2", "scenario5", "scenario6"],
     indirect=["scenarios_sparse"],
 )
 def test_extract_sparse_region(scenarios_sparse, expected):
@@ -58,26 +59,14 @@ def test_extract_sparse_region(scenarios_sparse, expected):
         (1, torch.tensor([9, 5, 7])),
         (2, torch.tensor([10, 6, 9])),
         (5, torch.tensor([5, 5])),
+        (6, torch.tensor([5, 0, 5])),
     ],
-    ids=["scenario1", "scenario2", "scenario5"],
+    ids=["scenario1", "scenario2", "scenario5", "scenario6"],
     indirect=["scenarios_sparse"],
 )
 def test_pixel_per_mask(create_instance, expected_pixel_count):
     pixel_count = create_instance.pixel_per_mask()
     assert torch.equal(pixel_count, expected_pixel_count)
-
-
-@pytest.fixture()
-def expect_ppmi(request):
-    if request.param == 1:
-        return {
-            "pixel_count": torch.tensor([3, 5, 4]),
-        }
-    elif request.param == 2:
-        return {
-            "pixel_count": torch.tensor([4, 6, 6]),
-        }
-    raise NotImplementedError(f"No such scenario: {request.param!r}")
 
 
 @pytest.mark.parametrize(
@@ -86,8 +75,9 @@ def expect_ppmi(request):
         (1, torch.tensor([3, 5, 4])),
         (2, torch.tensor([4, 6, 6])),
         (5, torch.tensor([5, 0])),
+        (6, torch.tensor([5, 0, 0])),
     ],
-    ids=["scenario1", "scenario2", "scenario5"],
+    ids=["scenario1", "scenario2", "scenario5", "scenario6"],
     indirect=["scenarios_sparse"],
 )
 def test_pixel_per_mask_inside(scenarios_sparse, expected_pixel_count):
