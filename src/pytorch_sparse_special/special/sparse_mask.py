@@ -72,6 +72,30 @@ class SparseMasksTensor:
 
         return filtered_indices, filtered_values
 
+    def _get_full_count(self, indices: torch.Tensor) -> torch.Tensor:
+        """Creates for all masks count of pixels based on indices.
+
+        Args:
+            indices (torch.Tensor): Tensor with indices.
+
+        Returns:
+            torch.Tensor: Tensor of shape [N, 1] with the number of pixels based on indices.
+        """
+        # count the values on the N axis
+        unique_index, count = indices[0, :].unique(return_counts=True)
+
+        # Create Tensor with the range of all mask
+        # necessary, if mask not inside bbox and we want to keep the actual shape
+        num_masks = torch.arange(self.n_total)
+
+        # Final variable which has the shape matching all masks
+        full_count = torch.zeros(num_masks.shape, dtype=torch.long)
+
+        # The unique_index correlates with the mask layer index
+        # which enables infusing the count into full_count
+        full_count[unique_index] = count
+        return full_count
+
     def pixel_per_mask(self) -> torch.Tensor:
         """Count the number of pixels per masks from the sparse matrix.
 
@@ -93,17 +117,4 @@ class SparseMasksTensor:
             Tensor: Number of unique values on z axis inside bbox
         """
         inside_indices, _ = self.extract_sparse_region(bbox)
-        # count the values on the N axis
-        unique_index, count = inside_indices[0, :].unique(return_counts=True)
-
-        # Create Tensor with the range of all mask
-        # necessary, if mask not inside bbox and we want to keep the actual shape
-        num_masks = torch.arange(self.n_total)
-
-        # Final variable which has the shape matching all masks
-        full_count = torch.zeros(num_masks.shape, dtype=torch.long)
-
-        # The unique_index correlates with the mask layer index
-        # which enables infusing the count into full_count
-        full_count[unique_index] = count
-        return full_count
+        return self._get_full_count(inside_indices)
