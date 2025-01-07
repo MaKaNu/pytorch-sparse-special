@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://makanu.github.io/pytorch-sparse-special/</loc>
+         <lastmod>2025-01-07</lastmod>
+    </url>
+    <url>
+         <loc>https://makanu.github.io/pytorch-sparse-special/examples/</loc>
+         <lastmod>2025-01-07</lastmod>
+    </url>
+    <url>
+         <loc>https://makanu.github.io/pytorch-sparse-special/modules/</loc>
+         <lastmod>2025-01-07</lastmod>
+    </url>
+    <url>
+         <loc>https://makanu.github.io/pytorch-sparse-special/tests/</loc>
+         <lastmod>2025-01-07</lastmod>
+    </url>
+</urlset>
